@@ -50,7 +50,7 @@ Route    |  Variable usage priority
 ---------|----------------------------------------------
 /api     | `API_URL`, `WEB_URL`, `ADMIN_URL`
 /admin   | `ADMIN_URL`, `WEB_URL`, `API_URL`
-/web     | `WEB_URL`, `ADMIN_URL`, `API_URL`
+/        | `WEB_URL`, `ADMIN_URL`, `API_URL`
 /cdn     | `CDN_URL`, `WEB_URL`, `ADMIN_URL`, `API_URL`
 
 ## FAQ
