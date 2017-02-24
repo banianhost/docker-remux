@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# http://serverfault.com/questions/577370
+# https://github.com/docker-library/docs/tree/master/nginx#using-environment-variables-in-nginx-configuration
+
+export _WEB_URL=${WEB_URL:-${ADMIN_URL:-$API_URL}};
+export _ADMIN_URL=${ADMIN_URL:-${WEB_URL:-$API_URL}};
+export _API_URL=${API_URL:-${WEB_URL:-$ADMIN_URL}};
+export _CDN_URL=${CDN_URL:-${WEB_URL:-${ADMIN_URL:-$API_URL}}};
+
+envsubst < /etc/nginx/template.conf \
+         > /etc/nginx/conf.d/default.conf
+
+nginx -g 'daemon off;'
