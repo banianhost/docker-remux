@@ -8,8 +8,7 @@ When we started changing our technologies into microservices, lots of problems s
 - Harder local development as we have to configure one port for each service and somehow link them together.
 - CORS. allowing `*` is unsecure while using specefic domain names requires many config changes in different dev envs.
   or even imagine what if a UI developer whants to simply use staging api server and just focus on developing UI ? :))
-- Service discovery problmes with solutins like [nginx-proxy](https://github.com/jwilder/nginx-proxy) for docker SWARM mode ([#520](https://gi
-thub.com/jwilder/nginx-proxy/issues/520)).
+- Service discovery problmes with solutins like [nginx-proxy](https://github.com/jwilder/nginx-proxy) for docker SWARM mode ([#520](https://github.com/jwilder/nginx-proxy/issues/520)).
 - Typically we don't want to configure or expose our real service IPs.
 
 ## The solution
@@ -41,8 +40,40 @@ ould go. (It is recommanded using REMUX behind nginx-proxy)
 
 ## Docker image
 Pre built docker image is published at `baninan/remux`.
-docker-compose example usage will be added soon.
 
+## docker-compose example
+```yaml
+version: '3'
+services:
+
+ remux:
+    image: banian/remux
+    deploy:
+           placement:
+                constraints:
+                    - node.hostname==YOUR_HOST_NAME
+    environment:
+      - VIRTUAL_HOST=mysubdomain.local
+      - VIRTUAL_PORT=80
+      - API_URL=myservice_api:3000
+      - WEB_URL=myservice_web:3001
+      - ADMIN_URL=myservice_admin:3002
+      - CDN_URL=myservice_cdn:9000
+
+ api:
+    image: API_IMAGE_NAME
+
+ web:
+    image: WEB_IMAGE_NAME
+
+ admin:
+    image: ADMIN_IMAGE_NAME
+ 
+ cdn:
+    image: CDN_IMAGE_NAME
+```
+
+Make sure to replace the ```API_IMAGE_NAME```, ```WEB_IMAGE_NAME```, ```ADMIN_IMAGE_NAME``` and ```CDN_IMAGE_NAME``` with your own service image names.
 ## Environment variables & routes
 You don't have to configure all of variables, they will be replaced by next one if not set.
 
