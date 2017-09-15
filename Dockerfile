@@ -2,6 +2,8 @@ FROM nginx
 
 # MAINTAINER Pooya Parsa <pooya@pi0.ir>
 
+EXPOSE 80
+
 CMD entrypoint
 COPY app/entrypoint /bin
 
